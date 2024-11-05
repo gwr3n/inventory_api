@@ -64,7 +64,7 @@ class StochasticLotSizing:
         self.max_demand = lambda d: sp.poisson(d).ppf(q).astype(int)         # max demand in the support
         
         # initialize instance variables
-        self.T, self.K, self.h, self.p, self.d, self.min_inv_level, self.max_inv_level = len(d), K, h, p, d, -self.max_demand(sum(d)), self.max_demand(sum(d))
+        self.T, self.K, self.h, self.p, self.d, self.min_inv_level, self.max_inv_level = len(d), K, h, p, d, int(-self.max_demand(sum(d))), int(self.max_demand(sum(d)))
         self.pmf = [[sp.poisson(self.d[t]).pmf(k)/q for k in range(0, self.max_demand(self.d[t]) + 1)] for t in range(self.T)] # tabulate pmf
 
     def solve(self):
@@ -119,6 +119,4 @@ def solve_ss():
     start_time = time.time()
     result = lot_sizing.solve()
     end_time = time.time() - start_time
-    #return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': str(result["s"]), 'S': str(result["S"])})
-    js = [{'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]}]
-    return Response(json.dumps(js),  mimetype='application/json')
+    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]})
