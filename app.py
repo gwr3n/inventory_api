@@ -1,11 +1,12 @@
 from flask import Flask, request, Response, jsonify
-from flask_cors import cross_origin # https://github.com/corydolphin/flask-cors
+from flask_cors import CORS # https://github.com/corydolphin/flask-cors
 from typing import List
 import scipy.stats as sp
 import time
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
@@ -113,7 +114,6 @@ class StochasticLotSizing:
         return {"Cn": J_old, "Gn": Gn, "s": s, "S": S}
 
 @app.route('/ss', methods=['POST'])
-@cross_origin
 def solve_ss():
     instance = request.get_json()
     lot_sizing = StochasticLotSizing(**instance)
