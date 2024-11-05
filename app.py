@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, Response, jsonify
 from typing import List
 import scipy.stats as sp
 import time
+import json
 
 app = Flask(__name__)
 
@@ -118,4 +119,6 @@ def solve_ss():
     start_time = time.time()
     result = lot_sizing.solve()
     end_time = time.time() - start_time
-    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': str(result["s"]), 'S': str(result["S"])})
+    #return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': str(result["s"]), 'S': str(result["S"])})
+    js = [{'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]}]
+    return Response(json.dumps(js),  mimetype='application/json')
