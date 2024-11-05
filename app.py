@@ -1,10 +1,12 @@
 from flask import Flask, request, Response, jsonify
+from flask_cors import CORS
 from typing import List
 import scipy.stats as sp
 import time
 import json
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 def hello_world():
