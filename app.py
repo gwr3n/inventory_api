@@ -16,7 +16,7 @@ def fibonacci(n):
             a, b = b, a + b
         return b
 
-@app.route('/fibonacci', methods=['POST'])
+@app.route('/fibonacci', methods=['POST','GET'])
 def get_fibonacci():
     data = request.get_json()
     n = data.get('n')
