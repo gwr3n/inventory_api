@@ -118,4 +118,4 @@ def solve_ss():
     start_time = time.time()
     result = lot_sizing.solve()
     end_time = time.time() - start_time
-    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]})
+    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': str(result["s"]), 'S': str(result["S"])})
