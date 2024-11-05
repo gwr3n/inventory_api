@@ -112,11 +112,10 @@ class StochasticLotSizing:
 
 @app.route('/ss', methods=['POST'])
 def solve_ss():
-    data = request.get_json()
-    instance = {"K": data.get('K'), "h": data.get('h'), "p": data.get('p'), "d": data.get('d')}
+    instance = request.get_json()
     lot_sizing = StochasticLotSizing(**instance)
     i = 0   #initial inventory level
     start_time = time.time()
     result = lot_sizing.solve()
     end_time = time.time() - start_time
-    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': str(result["s"]), 's': str(result["S"])})
+    return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]})
