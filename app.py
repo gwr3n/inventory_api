@@ -5,6 +5,8 @@ import scipy.stats as sp
 import time
 import json
 
+# https://osxdaily.com/2017/01/30/curl-post-request-command-line-syntax/
+
 app = Flask(__name__)
 CORS(app)
 
