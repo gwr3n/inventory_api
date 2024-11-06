@@ -44,6 +44,9 @@
 	"d": [30,40,30,40,30]
 }				</textarea><br><br>
         		<button type="button" onclick="sendPostRequest()">Compute</button>
+        		<div id="loading" style="display: none;">
+  					<img id="loading-image" style="width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading..."/> 
+				</div>
     		</form>
             <!-- Parameters legend -->
     		<div class="card-body">
@@ -99,6 +102,8 @@
             const jsonInput = document.getElementById('jsonInput').value;
             jsonInputObj = JSON.parse(jsonInput);
             try {
+                var x = document.getElementById("loading");
+                x.style.display = "block";
                 const response = await fetch('https://inventory-api-9uz7.onrender.com/ss', {
                     method: 'POST',
                     headers: {
@@ -116,6 +121,7 @@
                 console.error('Fetch error: ', error);
                 document.getElementById('responseOutput').innerText = 'Error: ' + error.message;
             }
+            x.style.display = "none";
         }
         
         // Function to display the response from the API
