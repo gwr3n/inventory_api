@@ -3,7 +3,7 @@ from flask_cors import CORS # https://github.com/corydolphin/flask-cors
 from typing import List
 import scipy.stats as sp
 import time
-import json
+import signal
 
 # https://osxdaily.com/2017/01/30/curl-post-request-command-line-syntax/
 
@@ -12,27 +12,27 @@ CORS(app)
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World! (2)'
+    return 'Hello, World!'
 
-def fibonacci(n):
-    if n <= 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        a, b = 0, 1
-        for _ in range(2, n + 1):
-            a, b = b, a + b
-        return b
+class TimeoutException(Exception):
+    pass
 
-@app.route('/fibonacci', methods=['POST'])
-def get_fibonacci():
-    data = request.get_json()
-    n = data.get('n')
-    if n is None or not isinstance(n, int) or n < 0:
-        return jsonify({'error': 'Invalid input. Please provide a non-negative integer.'}), 400
-    result = fibonacci(n)
-    return jsonify({'n': n, 'fibonacci': result})
+def deadline(seconds, *args):
+    def decorate(f):
+        def handler(signum, frame):
+            raise TimeoutException("Timed out!")
+
+        def new_f(*args):
+            signal.signal(signal.SIGALRM, handler)
+            signal.alarm(seconds)
+            try:
+                return f(*args)
+            finally:
+                signal.alarm(0)
+
+        new_f.__name__ = f.__name__
+        return new_f
+    return decorate
 
 class StochasticLotSizing:
     """
@@ -71,6 +71,7 @@ class StochasticLotSizing:
         self.T, self.K, self.h, self.p, self.d, self.min_inv_level, self.max_inv_level = len(d), K, h, p, d, int(-self.max_demand(sum(d))), int(self.max_demand(sum(d)))
         self.pmf = [[sp.poisson(self.d[t]).pmf(k)/q for k in range(0, self.max_demand(self.d[t]) + 1)] for t in range(self.T)] # tabulate pmf
 
+    @deadline(60)
     def solve(self):
         Gn = [0 for _ in range(self.min_inv_level, self.max_inv_level + 1)]
         J_new = [float("inf") for _ in range(self.min_inv_level, self.max_inv_level + 1)]
