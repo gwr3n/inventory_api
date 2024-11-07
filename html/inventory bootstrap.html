@@ -266,7 +266,13 @@
                                 text: 'Periods'
                             },
                             type: 'linear',
-                            position: 'bottom'
+                            position: 'bottom',
+                            ticks: {
+								callback: function(value) {
+									return Number.isInteger(value) ? value : null;
+								},
+								stepSize: 1
+							}
                         },
                         y: {
                             title: {
