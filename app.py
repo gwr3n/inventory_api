@@ -53,7 +53,7 @@ def validate_structure(data, expected_structure):
     for key, expected_type in expected_structure.items():
         if key not in data or not isinstance(data[key], expected_type):
             return False
-        if key == "d" and not all(isinstance(i, int) for i in data[key]):
+        if key == "d" and not all(isinstance(i, float) for i in data[key]):
             return False
         if key == "d" and not all(i > 0 for i in data[key]):
             return False
