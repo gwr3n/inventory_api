@@ -30,7 +30,8 @@ def solve_ss_dp():
     instance = request.get_json()
     ww = RS_DP(**instance)
     start_time = time.time()
-    optCost = ww.optimal_cost()
+    # optCost = ww.optimal_cost()
     end_time = time.time() - start_time
     res = ww.reorder_points(instance)
-    return jsonify({'optCost': optCost, 'solTime': round(end_time, 2),'s': res["s"], 'S': res["S"]})
+    simCost = round(ww.simulate_sS(res["s"],res["S"],0),2)
+    return jsonify({'optCost': simCost, 'solTime': round(end_time, 2),'s': res["s"], 'S': res["S"]})
