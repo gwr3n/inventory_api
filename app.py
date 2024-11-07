@@ -1,6 +1,7 @@
 from flask import Flask, request, Response, jsonify
 from flask_cors import CORS # https://github.com/corydolphin/flask-cors
 
+from typing import List
 import time
 
 from sdp import StochasticLotSizing
@@ -37,10 +38,33 @@ CORS(app)
 def hello_world():
     return 'Hello, World!'
 
+# Define the expected input JSON structure
+expected_structure = {
+    "K": float,
+    "h": float,
+    "p": float,
+    "d": List[float]
+}
+
+# Function to validate the structure
+def validate_structure(data, expected_structure):
+    if not isinstance(data, dict):
+        return False
+    for key, expected_type in expected_structure.items():
+        if key not in data or not isinstance(data[key], expected_type):
+            return False
+        if key == "d" and not all(isinstance(i, int) for i in data[key]):
+            return False
+        if key == "d" and not all(i > 0 for i in data[key]):
+            return False
+    return True
+
 @app.route('/ss', methods=['POST'])
 @deadline(120)
 def solve_ss():
     instance = request.get_json()
+    if(not validate_structure(instance, expected_structure)):
+        return jsonify({"error": "Invalid input data"})
     lot_sizing = StochasticLotSizing(**instance)
     i = 0   #initial inventory level
     start_time = time.time()
@@ -52,6 +76,8 @@ def solve_ss():
 @deadline(120)
 def solve_ss_dp():
     instance = request.get_json()
+    if(not validate_structure(instance, expected_structure)):
+        return jsonify({"error": "Invalid input data"})
     ww = RS_DP(**instance)
     # optCost = ww.optimal_cost()
     start_time = time.time()
