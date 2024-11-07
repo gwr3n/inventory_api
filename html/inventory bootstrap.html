@@ -43,6 +43,12 @@
 	"p": 10, 
 	"d": [30,40,30,40,30]
 }				</textarea><br><br>
+                <!-- Dropdown list for algorithm selection -->
+    			<label for="algorithm">Select Algorithm:</label><br>
+    			<select id="algorithm" name="algorithm">
+        			<option value="SDP">SDP (exact, slow)</option>
+        			<option value="DP">DP (approximate, fast)</option>
+    			</select><br><br>
         		<button type="button" onclick="sendPostRequest()">Compute</button>
         		<div id="loading" style="display: none;">
   					<img id="loading-image" style="width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading..."/> 
@@ -101,10 +107,17 @@
         async function sendPostRequest() {
             const jsonInput = document.getElementById('jsonInput').value;
             jsonInputObj = JSON.parse(jsonInput);
+            const algorithm = document.getElementById('algorithm').value;
+            let url;
+            if(algorithm == 'SDP') {
+            	url = 'https://inventory-api-9uz7.onrender.com/ss';
+            } else {
+            	url = 'https://inventory-api-9uz7.onrender.com/ss_dp';
+            }
             try {
                 var x = document.getElementById("loading");
                 x.style.display = "block";
-                const response = await fetch('https://inventory-api-9uz7.onrender.com/ss', {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
