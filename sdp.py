@@ -1,26 +1,5 @@
 from typing import List
 import scipy.stats as sp
-import signal
-
-class TimeoutException(Exception):
-    pass
-
-def deadline(seconds, *args):
-    def decorate(f):
-        def handler(signum, frame):
-            raise TimeoutException("Timed out!")
-
-        def new_f(*args):
-            signal.signal(signal.SIGALRM, handler)
-            signal.alarm(seconds)
-            try:
-                return f(*args)
-            finally:
-                signal.alarm(0)
-
-        new_f.__name__ = f.__name__
-        return new_f
-    return decorate
 
 class StochasticLotSizing:
     """
@@ -59,7 +38,6 @@ class StochasticLotSizing:
         self.T, self.K, self.h, self.p, self.d, self.min_inv_level, self.max_inv_level = len(d), K, h, p, d, int(-self.max_demand(sum(d))), int(self.max_demand(sum(d)))
         self.pmf = [[sp.poisson(self.d[t]).pmf(k)/q for k in range(0, self.max_demand(self.d[t]) + 1)] for t in range(self.T)] # tabulate pmf
 
-    @deadline(60)
     def solve(self):
         Gn = [0 for _ in range(self.min_inv_level, self.max_inv_level + 1)]
         J_new = [float("inf") for _ in range(self.min_inv_level, self.max_inv_level + 1)]
