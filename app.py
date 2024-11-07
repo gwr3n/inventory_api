@@ -26,7 +26,7 @@ def solve_ss():
     return jsonify({'optCost': result["Cn"][i], 'solTime': round(end_time, 2),'s': result["s"], 'S': result["S"]})
 
 @app.route('/ss_dp', methods=['POST'])
-def solve_ss():
+def solve_ss_dp():
     instance = request.get_json()
     ww = RS_DP(**instance)
     start_time = time.time()
