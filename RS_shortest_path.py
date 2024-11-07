@@ -17,6 +17,8 @@ import functools
 import networkx as nx
 import scipy.stats as stats
 
+from sdp import deadline
+
 class memoize(object): 
     """
     Memoization utility
@@ -122,6 +124,7 @@ class RS_DP(StochasticLotSizingProblem):
     Multi-Echelon Inventory Systems. PhD thesis, Lancaster University, 1996.
     """
 
+    @deadline(120)
     def __init__(self, K: float, h: float, p: float, d: List[float], I0: float = float('nan')):
         """
         Create an instance of a non-stationary stochastic lot sizing problem.
@@ -199,6 +202,7 @@ class RS_DP(StochasticLotSizingProblem):
         return qty
     
     @staticmethod
+    @deadline(120)
     def reorder_points(instance) -> List[float]:
         '''
         Compute the reorder points
@@ -225,6 +229,7 @@ class RS_DP(StochasticLotSizingProblem):
             ins["d"] = d
         return {"S": S, "s": s}
     
+    @deadline(120)
     def simulate_sS(self, s, S, initial_inventory):
         '''
         Simulate an (s,S) policy
