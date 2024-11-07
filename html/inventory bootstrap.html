@@ -36,7 +36,7 @@
         <div class="form-group">
             <form id="apiForm" style="text-align: center;">
         		<label for="jsonInput">JSON Input</label><br>
-        		<textarea id="jsonInput" name="jsonInput" rows="10" cols="50">
+        		<textarea id="jsonInput" name="jsonInput" rows="10" cols="30">
 {
 	"K": 50, 
 	"h": 1, 
@@ -51,7 +51,7 @@
     			</select><br><br>
         		<button type="button" onclick="sendPostRequest()">Compute</button>
         		<div id="loading" style="display: none;">
-  					<img id="loading-image" style="width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading..."/> 
+  					<img id="loading-image" style="width: 100px;" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="Loading..."> 
 				</div>
     		</form>
             <!-- Parameters legend -->
@@ -78,19 +78,27 @@
         	<canvas id="inventoryChart" style="height: 400px;"></canvas>
     	</div>
 
-    	<div class="mt-4" style="text-align: center;">
-            <!-- License -->
-    		<p>
-      		<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
-      		<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a>
-      		</p>
-      		<!-- Copyright -->
-            <p id="copyright"></p>
-  			<script>
-  			var current_date = new Date();
-  			document.getElementById("copyright").innerHTML = 'Copyright &copy;&nbsp;'+current_date.getFullYear()+'<br>Roberto Rossi';
-  			</script>
-    	</div>
+		<hr>
+		<div class="text-center">
+			<p>
+			<a href="https://validator.w3.org/check?uri=http%3A%2F%2Fgwr3n.github.io/inventory.html"><img
+			   src="https://www.w3.org/Icons/valid-xhtml10"
+			   alt="Valid XHTML 1.0!" height="31" width="88"></a>
+			</p>
+		</div> 	
+		<div class="text-center">
+			<!-- License -->
+			<p>
+			<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">
+			<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png"></a>
+			</p>
+			<p id="copyright"></p>
+			 <!-- Copyright -->
+			<script>
+			var current_date = new Date();
+			document.getElementById("copyright").innerHTML = 'Copyright &copy;<br>2006-'+current_date.getFullYear()+'<br>Roberto Rossi';
+			</script>
+		</div> 	
     </div>
 
     <!-- Bootstrap JS and dependencies -->
