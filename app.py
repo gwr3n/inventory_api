@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS # https://github.com/corydolphin/flask-cors
 
 from typing import List
@@ -62,7 +62,7 @@ def validate_structure(data, expected_structure):
 def solve_ss():
     instance = request.get_json()
     if(not validate_structure(instance, expected_structure)):
-        return jsonify({"error": "Invalid input data"})
+        return jsonify({"error": "Invalid input data"}), 400
     lot_sizing = StochasticLotSizing(**instance)
     i = 0   #initial inventory level
     start_time = time.time()
@@ -75,7 +75,7 @@ def solve_ss():
 def solve_ss_dp():
     instance = request.get_json()
     if(not validate_structure(instance, expected_structure)):
-        return jsonify({"error": "Invalid input data"})
+        return jsonify({"error": "Invalid input data"}), 400
     ww = RS_DP(**instance)
     # optCost = ww.optimal_cost()
     start_time = time.time()
