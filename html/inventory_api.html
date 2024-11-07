@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Non-stationary (s,&nbsp;S)&nbsp;Policy Calculator API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Non-stationary (s,&nbsp;S)&nbsp;Policy Calculator API Documentation</h1>
+        
+        <h2>Base URL</h2>
+        <p><code>https://inventory-api-9uz7.onrender.com/ss_dp</code></p>
+        
+        <h2>Endpoint</h2>
+        <p><code>POST /</code></p>
+        
+        <h2>Description</h2>
+        <p>This endpoint calculates the re-order and order-up-to levels of the optimal (s, S) inventory control policy for the inventory control problem in a finite-horizon periodic-review system.</p>
+        
+        <h2>Request</h2>
+        <p><strong>Method:</strong> <code>POST</code></p>
+        <p><strong>Content-Type:</strong> <code>application/json</code></p>
+        <p><strong>Body:</strong></p>
+        <pre><code>{
+    "K": 50,
+    "h": 1,
+    "p": 10,
+    "d": [30, 40, 30, 40, 30]
+}</code></pre>
+        
+        <h2>Parameters</h2>
+        <ul>
+            <li><strong>K:</strong> (float) The fixed ordering cost.</li>
+            <li><strong>h:</strong> (float) The proportional holding cost.</li>
+            <li><strong>p:</strong> (float) The penalty cost.</li>
+            <li><strong>d:</strong> (array of float) The Poisson demand rate in each period.</li>
+        </ul>
+        
+        <h2>Example Request</h2>
+        <pre><code>curl -X POST https://inventory-api-9uz7.onrender.com/ss_dp \
+-H "Content-Type: application/json" \
+-d '{
+  "K": 50,
+  "h": 1,
+  "p": 10,
+  "d": [30, 40, 30, 40, 30]
+}'</code></pre>
+        
+        <h2>Response</h2>
+        <p><strong>Status Code:</strong> <code>200 OK</code></p>
+        <p><strong>Body:</strong> JSON object containing the calculated metrics (example structure below)</p>
+        <pre><code>{
+    "optCost":287.7,
+    "S":[37,78,78,49,37],
+    "s":[19,29,19,28,19],
+    "solTime":0.63
+}</code></pre>
+        
+        <h2>Error Handling</h2>
+        <p><strong>Status Code:</strong> <code>400 Bad Request</code></p>
+        <p><strong>Body:</strong> JSON object with error details</p>
+        <pre><code>{
+    "error": "Invalid input data"
+}</code></pre>
+        
+        <h2>Notes</h2>
+        <ul>
+            <li>Ensure that the input JSON is correctly formatted.</li>
+            <li>The demand rates should be non-negative floats.</li>
+        </ul>
+    </div>
+</body>
+</html>
