@@ -2,3 +2,4 @@ Flask
 Gunicorn
 Scipy
 Flask_cors
+networkx
