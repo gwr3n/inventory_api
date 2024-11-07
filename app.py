@@ -51,9 +51,7 @@ def validate_structure(data, expected_structure):
     if not isinstance(data, dict):
         return False
     for key, expected_type in expected_structure.items():
-        if key not in data or not isinstance(data[key], expected_type):
-            return False
-        if key == "d" and not all(isinstance(i, float) for i in data[key]):
+        if key not in data: 
             return False
         if key == "d" and not all(i > 0 for i in data[key]):
             return False
@@ -85,4 +83,3 @@ def solve_ss_dp():
     end_time = time.time() - start_time
     simCost = round(ww.simulate_sS(res["s"],res["S"],0),2)
     return jsonify({'optCost': simCost, 'solTime': round(end_time, 2),'s': res["s"], 'S': res["S"]})
-
