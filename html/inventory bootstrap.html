@@ -117,6 +117,12 @@
         // Declare variables for the chart and interval
         let chart;
         let myInterval;
+        let isRunning = false;
+        let msec = 1000;
+        
+        function getmsec() {
+        	return msec;
+        }
 
         // Function to send a POST request with the JSON input
         async function sendPostRequest() {
@@ -298,7 +304,19 @@
                 clearInterval(myInterval);
             } 
             myInterval = setInterval(updateChart, 1000);
-        }
+            isRunning = true;
+            
+            // Pause/resume simulation if the user clicks on the chart
+            const inventoryChart = document.getElementById("inventoryChart");
+			inventoryChart.addEventListener("click", function() {
+				if (isRunning) {
+					clearInterval(myInterval);
+				} else {				
+					myInterval = setInterval(updateChart, 1000);
+				}
+				isRunning = !isRunning;
+			});
+        } 
     </script>
 </body>
 </html>
